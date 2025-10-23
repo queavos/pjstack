@@ -1,0 +1,15 @@
+services:
+  hfsql_test:
+    image: windev/hfsql:304012
+    container_name: hfsql_test
+    restart: unless-stopped
+    ports:
+      - 4900:4900
+      - 4999:4999
+      - 27281:27281
+    volumes:
+      - d:/docker-volumes/hfsql_data:/var/lib/hfsql
+    environment:
+      - HFSQL_ALLOW_EMPTY_PASSWORD=true
+    command: /opt/hfsql/manta64 --no-daemon
+networks: {}

@@ -1,0 +1,14 @@
+services:
+  cloudcmd:
+    image: coderaiser/cloudcmd
+    container_name: cloudcmd
+    ports:
+      - 8090:8000
+    volumes:
+      - "d:/:/mnt/datos01"
+    environment:
+      - USER=admin
+      - PASSWORD=mandarina
+    restart: always
+
+networks: {}

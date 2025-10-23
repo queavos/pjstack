@@ -1,0 +1,17 @@
+services:
+  backup:
+    build: ./conf
+    container_name: backup_ritual
+    volumes:
+      - d:/docker-compose/backup-container/conf:/usr/local/bin:rw
+      - d:/docker-compose/backup-container/rclone:/root/.config/rclone
+      - d:/backups:/mnt/Datos01/backups
+      - d:/docker-volumes:/mnt/Datos01/app-data:ro
+      - d:/docker-compose:/mnt/Datos01/docker-compose:ro
+      - //var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - web-stack_default
+    restart: unless-stopped
+networks:
+  web-stack_default:
+    external: true

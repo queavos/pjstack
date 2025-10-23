@@ -1,0 +1,45 @@
+services:
+  php:
+    image: webdevops/php-apache:7.4
+    container_name: php_app
+    ports:
+      - 80:80
+    volumes:
+      - d:/docker-volumes/www:/app
+    environment:
+      - WEB_DOCUMENT_ROOT=/app
+      - PHP_UPLOAD_MAX_FILESIZE=64M
+      - PHP_POST_MAX_SIZE=64M
+      - PHP_MAX_EXECUTION_TIME=300
+      - PHP_MEMORY_LIMIT=512M
+    restart: always
+  mariadb:
+    image: mariadb:10.6
+    container_name: mariadb_server
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: supersecret
+      MYSQL_DATABASE: appdb
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppass
+    volumes:
+      - d:/docker-volumes/mariadata:/var/lib/mysql
+      - d:/docker-volumes/mariadb/my.cnf:/etc/mysql/conf.d/my.cnf
+    restart: always
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_ui
+    depends_on:
+      - mariadb
+    ports:
+      - 8081:80
+    environment:
+      PMA_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: supersecret
+      UPLOAD_LIMIT: 512M
+      MAX_EXECUTION_TIME: 6000
+    volumes:
+      - d:/docker-volumes/myadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+    restart: always
+networks: {}
